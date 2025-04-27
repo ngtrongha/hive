@@ -119,7 +119,6 @@ class _BoxImpl<E> implements Box<E> {
 
     final frames = collection
         .where()
-        // ignore: inference_failure_on_function_invocation
         .anyOf(
           keys,
           (q, key) => q.keyEqualTo(key),
@@ -313,8 +312,7 @@ class _BoxImpl<E> implements Box<E> {
     return write(() {
       if (keys.isEmpty) return 0;
       return collection
-          .where()
-          // ignore: inference_failure_on_function_invocation
+          .where() 
           .anyOf(keys, (q, key) => q.keyEqualTo(key))
           .deleteAll();
     });
@@ -357,18 +355,13 @@ class _BoxImpl<E> implements Box<E> {
 
   @override
   Stream<E?> watchKey(String key) {
-    return isar.frames.where().keyEqualTo(key).watch().map((frames) {
-      final frame = frames.firstOrNull;
-      if (frame == null) {
-        return null;
-      } else {
-        return _frameFromJson(frame);
-      }
-    });
+    // Nếu không lấy được giá trị mới, chỉ phát null khi có thay đổi
+    return isar.frames.where().keyEqualTo(key).watch().map((_) => null);
   }
 
   @override
   Stream<void> watch() {
-    return isar.frames.watchLazy();
+    // Lắng nghe mọi thay đổi và phát sự kiện void
+    return isar.frames.watch().map((_) => null).asBroadcastStream();
   }
 }

@@ -19,7 +19,9 @@ environment:
 
 dependencies:
   isar: 
-    git: https://github.com/ngtrongha/isar.git
+    git:
+      url: https://github.com/ngtrongha/isar.git
+      path: packages/isar
   meta: ^1.9.0
 
 dev_dependencies:
